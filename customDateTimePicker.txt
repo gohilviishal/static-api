@@ -1,0 +1,132 @@
+import { CustomDateTimePicker, CustomInput } from "@/components/common";
+import { Box } from "@mui/material";
+import React from "react";
+
+interface DetailTabContextProps {
+  register?: any;
+  errors?: any;
+  dates?: any;
+  setDates?: any;
+  setValue?: any;
+}
+
+const datesArr = [
+  {
+    label: "Date Brought In",
+    fieldname: "date_broughtin",
+  },
+  {
+    label: "Estimated D.O.C",
+    fieldname: "date_promised",
+  },
+  {
+    label: "Date Skinned",
+    fieldname: "date_skinned",
+  },
+  {
+    label: "Date Mounted",
+    fieldname: "date_mounted",
+  },
+  {
+    label: "Date Finished",
+    fieldname: "date_finished",
+  },
+  {
+    label: "Date Notified",
+    fieldname: "date_notified",
+  },
+  {
+    label: "Date Picked Up",
+    fieldname: "date_pickedup",
+  },
+];
+
+const DetailsTabContext: React.FC<DetailTabContextProps> = ({
+  register,
+  errors,
+  dates,
+  setDates,
+  setValue,
+}) => {
+  return (
+    <>
+      <Box
+        className="ct-date-picker-section"
+        display={"grid"}
+        width={"100%"}
+        mb={{ xs: "20px", md: "30px" }}
+        gap={"8px"}
+        sx={{
+          gridTemplateColumns: {
+            lg: "repeat(auto-fit, minmax(149px, 1fr))",
+            md: "repeat(auto-fit, minmax(200px, 1fr))",
+            sm: "repeat(3, 1fr)",
+            xs: "1fr",
+          },
+        }}
+      >
+        {datesArr.map((ele, index) => (
+          <Box key={`${ele.fieldname}-${index}`}>
+            <CustomDateTimePicker
+              label={ele.label}
+              register={register}
+              onChange={(newDate: any) => {
+                setDates((prevState: any) => ({
+                  ...prevState,
+                  [`${ele.fieldname}`]: newDate,
+                }));
+                setValue(ele.fieldname, newDate);
+              }}
+              fieldName={ele.fieldname}
+              value={dates[ele.fieldname]}
+            />
+          </Box>
+        ))}
+        <Box>
+          <CustomInput
+            label="Received By"
+            placeholder="Enter Received "
+            size="small"
+            register={register}
+            fieldName="received_by"
+            error={errors.received_by?.message}
+          />
+        </Box>
+      </Box>
+
+      <Box
+        display={"grid"}
+        gridTemplateColumns={{ xs: "repeat(1, 1fr)", sm: "repeat(2, 1fr)" }}
+        gap={"20px"}
+      >
+        <Box>
+          <CustomInput
+            label="Invoice notes shown on invoices"
+            placeholder="Enter notes"
+            size="small"
+            register={register}
+            fieldName="notes"
+            error={errors.notes?.message}
+            multiline
+            rows={4}
+          />
+        </Box>
+        <Box>
+          <CustomInput
+            label="Job notes not seen by customer"
+            placeholder="Enter special notes"
+            size="small"
+            register={register}
+            fieldName="special_notes"
+            error={errors.special_notes?.message}
+            multiline
+            rows={4}
+          />
+        </Box>
+      </Box>
+    </>
+  );
+};
+
+export default DetailsTabContext;
+  
